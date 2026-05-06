@@ -14,7 +14,7 @@ export const Header: React.FC<Props> = () => {
   const pathName = usePathname()
   return (
     <header>
-      <div className="main-container inner">
+      <div className="container inner">
         <Link href="/">
           <Image
             src="/logo.svg"

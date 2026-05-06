@@ -192,7 +192,7 @@
   }
 
   header {
-    @apply border-b border-dark-400 h-20;
+    @apply border-b border-dark-400 h-20 overflow-hidden;
 
     .inner {
       @apply flex justify-between items-center h-full;
@@ -205,7 +205,7 @@
         @apply flex h-full items-center gap-2;
 
         .nav-link {
-          @apply px-3 md:px-6 py-5 flex items-center transition-all hover:text-foreground font-medium h-full text-purple-100 cursor-pointer;
+          @apply px-3 md:px-6 flex items-center transition-all hover:text-foreground font-medium h-full text-purple-100 cursor-pointer;
         }
 
         .nav-link.is-active {
@@ -227,7 +227,29 @@
     }
 
     .button-group {
-      @apply flex gap-1 xl:gap-2 items-center;
+      @apply flex gap-1 xl:gap-2 items-center overflow-x-auto whitespace-nowrap pb-1 md:pb-0;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+
+      @media (min-width: 768px) {
+        &::-webkit-scrollbar {
+          display: block;
+        }
+        scrollbar-width: auto;
+        -ms-overflow-style: auto;
+      }
+
+      span {
+        @apply shrink-0;
+      }
+    }
+
+    .config-button, .config-button-active {
+      @apply shrink-0;
     }
 
     .config-button {
