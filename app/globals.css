@@ -186,7 +186,7 @@
       }
 
       nav {
-        @apply flex h-full items-center;
+        @apply flex h-full items-center gap-2;
 
         .nav-link {
           @apply px-6 py-5 flex items-center transition-all hover:text-white font-medium h-full text-purple-100 cursor-pointer;
@@ -625,68 +625,100 @@
 
   #search-modal {
     .trigger {
-      @apply px-6 hover:bg-transparent! font-medium transition-all h-full cursor-pointer text-base text-purple-100 flex items-center gap-2;
+      @apply h-11 min-w-68 rounded-lg border border-dark-400 bg-dark-500 px-3 text-sm text-purple-100 transition-all cursor-pointer flex items-center gap-2 hover:border-purple-600/40 hover:text-white max-md:min-w-11 max-md:px-3;
+    }
+
+    .trigger-label {
+      @apply flex-1 text-left text-purple-100/70 max-md:hidden;
     }
 
     .kbd {
-      @apply pointer-events-none hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100;
+      @apply pointer-events-none hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-purple-100/10 bg-dark-400 px-1.5 font-mono text-[10px] font-medium text-purple-100/75 opacity-100;
+    }
+
+    .dialog-backdrop {
+      @apply fixed inset-0 z-40 bg-black/65 backdrop-blur-[2px];
     }
 
     .dialog {
-      @apply bg-dark-400! max-w-sm sm:max-w-md md:max-w-2xl mx-auto;
+      @apply top-[8svh]! left-1/2! z-50! w-[calc(100vw-2rem)] max-w-[27rem]! -translate-x-1/2! translate-y-0! overflow-hidden rounded-2xl border border-white/6 bg-dark-400 p-0! shadow-[0_24px_120px_rgba(0,0,0,0.6)];
+    }
+
+    .search-shell {
+      @apply relative flex h-[18rem] flex-col bg-dark-400;
+    }
+
+    .search-head {
+      @apply border-b border-white/6 bg-[#13181f] px-4 py-4;
+    }
+
+    .results-pane {
+      @apply flex-1 overflow-y-auto;
+    }
+
+    .search-foot {
+      @apply border-t border-white/6 bg-[#13181f] px-0 py-0;
     }
 
     .cmd-input {
-      @apply bg-dark-500!;
+      @apply rounded-xl border border-white/10 bg-dark-500;
 
       input {
-        @apply placeholder:text-purple-100!;
+        @apply placeholder:text-purple-100/55! border-none! bg-transparent! shadow-none! focus-visible:ring-0! h-12 px-3 text-base;
       }
     }
 
-    .list {
-      @apply bg-dark-500 max-h-100;
+    .search-input {
+      @apply text-sm text-white;
     }
 
-    .heading {
-      @apply flex items-center gap-2 text-purple-100;
-    }
-
-    .group {
-      @apply bg-dark-500 text-purple-100;
+    .modal-close-button {
+      @apply absolute right-4 top-4 z-30 inline-flex h-8 w-8 items-center justify-center rounded-md text-purple-100/65 transition-colors hover:bg-dark-400 hover:text-white;
     }
   }
 
-  .dialog {
+  .search-results {
     .empty {
       @apply py-6 text-center text-sm text-gray-400;
     }
 
     .search-item {
-      @apply grid grid-cols-4 gap-4 items-center justify-between data-[selected=true]:bg-dark-400 transition-all !cursor-pointer hover:bg-dark-400 py-3;
+      @apply grid grid-cols-[minmax(0,1.7fr)_auto_auto] gap-6 items-center justify-between transition-all !cursor-pointer hover:bg-dark-400/60 px-5 py-4 border-b border-white/4 last:border-b-0 min-h-19;
+
+      &.is-selected {
+        @apply bg-[#202833] ring-1 ring-inset ring-purple-100/18 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)];
+      }
+
+      &[aria-selected='true'] {
+        @apply bg-[#202833] ring-1 ring-inset ring-purple-100/18 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)];
+      }
 
       .coin-info {
-        @apply flex gap-4 items-center col-span-2;
+        @apply flex gap-3 items-center min-w-0;
 
         img {
-          @apply size-9 rounded-full;
+          @apply size-10 rounded-full;
         }
 
         div {
-          @apply flex flex-col;
+          @apply flex min-w-0 flex-col;
+        }
+
+        strong {
+          @apply truncate text-sm font-semibold text-white;
         }
 
         .coin-symbol {
-          @apply text-sm text-purple-100 uppercase;
+          @apply text-xs text-purple-100 uppercase;
         }
       }
 
       .coin-price {
-        @apply font-semibold text-sm lg:text-base;
+        @apply hidden min-w-28 text-right font-semibold text-sm text-white md:block;
       }
 
       .coin-change {
-        @apply flex gap-1 text-sm lg:text-base items-center font-medium;
+        @apply min-w-20 justify-end gap-1 text-sm items-center font-medium;
       }
     }
   }
