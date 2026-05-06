@@ -162,17 +162,17 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
   }
 }
 
 @layer components {
   .container {
-    @apply px-4 sm:px-6 mx-auto max-w-360;
+    @apply px-4 sm:px-6 mx-auto max-w-[1440px];
   }
 
   .main-container {
-    @apply py-6 md:py-12 mx-auto px-4 sm:px-6 max-w-360 w-full space-y-6 md:space-y-6;
+    @apply py-6 md:py-12 mx-auto px-4 sm:px-6 max-w-[1440px] w-full overflow-x-hidden space-y-6 md:space-y-6;
   }
 
   .badge {
@@ -205,7 +205,7 @@
         @apply flex h-full items-center gap-2;
 
         .nav-link {
-          @apply px-6 py-5 flex items-center transition-all hover:text-foreground font-medium h-full text-purple-100 cursor-pointer;
+          @apply px-3 md:px-6 py-5 flex items-center transition-all hover:text-foreground font-medium h-full text-purple-100 cursor-pointer;
         }
 
         .nav-link.is-active {
@@ -299,7 +299,7 @@
     }
 
     .category-cell {
-      @apply pl-5 font-bold;
+      @apply pl-5 font-bold min-w-0;
     }
 
     .top-gainers-cell {
@@ -338,7 +338,7 @@
       @apply bg-dark-500 overflow-hidden;
 
       .name-cell {
-        @apply font-bold;
+        @apply font-bold min-w-0;
 
         a {
           @apply pl-1 md:pl-2 py-1 md:py-2 xl:py-1 flex items-center gap-2 md:gap-3;
@@ -358,11 +358,11 @@
       }
 
       .price-cell {
-        @apply font-bold pr-5 text-sm max-w-full truncate;
+        @apply font-bold pr-5 text-sm max-w-full truncate overflow-hidden text-ellipsis;
       }
 
       .price-change {
-        @apply flex gap-1 items-center text-sm font-medium;
+        @apply flex gap-1 items-center text-sm font-medium truncate;
       }
     }
   }
@@ -379,7 +379,7 @@
     }
 
     .category-cell {
-      @apply pl-5 font-bold;
+      @apply pl-5 font-bold min-w-0;
     }
 
     .top-gainers-cell {
@@ -474,7 +474,7 @@
       @apply bg-dark-500 overflow-hidden;
 
       .name-cell {
-        @apply font-bold;
+        @apply font-bold min-w-0;
       }
 
       .name-link {
@@ -494,11 +494,11 @@
       }
 
       .price-cell {
-        @apply font-bold pr-5 text-sm max-w-full truncate;
+        @apply font-bold pr-5 text-sm max-w-full truncate overflow-hidden text-ellipsis;
       }
 
       .price-change {
-        @apply flex gap-1 items-center text-sm font-medium;
+        @apply flex gap-1 items-center text-sm font-medium truncate;
       }
     }
 
@@ -516,7 +516,7 @@
   }
 
   #coin-details-page {
-    @apply py-12 px-4 sm:px-6 mx-auto max-w-360 size-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 items-center gap-6 xl:gap-10 justify-center;
+    @apply py-12 px-4 sm:px-6 mx-auto max-w-[1440px] size-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 items-center gap-6 xl:gap-10 justify-center;
 
     .primary {
       @apply size-full xl:col-span-2;
@@ -588,7 +588,7 @@
   }
 
   #coins-page {
-    @apply py-12 px-4 sm:px-6 mx-auto max-w-360 size-full items-center gap-10 justify-center;
+    @apply py-12 px-4 sm:px-6 mx-auto max-w-[1440px] w-full flex flex-col items-center gap-10 justify-center;
 
     .content {
       @apply flex flex-col w-full space-y-5;
@@ -641,7 +641,7 @@
 
   #search-modal {
     .trigger {
-      @apply h-11 min-w-68 rounded-lg border border-dark-400 bg-dark-500 px-3 text-sm text-purple-100 transition-all cursor-pointer flex items-center gap-2 hover:border-purple-600/40 hover:text-foreground max-md:min-w-11 max-md:px-3;
+      @apply h-11 min-w-68 rounded-lg border border-dark-400 bg-dark-500 px-3 text-sm text-purple-100 transition-all cursor-pointer flex items-center gap-2 hover:border-purple-600/40 hover:text-foreground max-md:min-w-fit max-md:p-2 max-md:border-none max-md:bg-transparent;
     }
 
     .trigger-label {

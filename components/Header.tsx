@@ -24,7 +24,7 @@ export const Header: React.FC<Props> = () => {
             className="h-auto w-auto dark:invert-0 invert"
           />
         </Link>
-        <nav className="flex items-center gap-4">
+        <nav className="flex items-center gap-2 md:gap-4">
           <Link
             className={cn('nav-link', {
               'is-active': pathName === '/',

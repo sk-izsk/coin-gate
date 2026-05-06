@@ -3,7 +3,7 @@
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { cn, formatCurrency, formatPercentage } from '@/lib/utils'
-import { TrendingDown, TrendingUp } from 'lucide-react'
+import { Search, TrendingDown, TrendingUp } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -177,6 +177,7 @@ export const SearchModal = () => {
         <DialogTrigger
           render={<button type="button" className="trigger" aria-label="Open search" />}
         >
+          <Search size={18} className="md:mr-2 text-purple-100/70" />
           <span className="trigger-label">Search for a token</span>
           <span className="kbd">Cmd K</span>
         </DialogTrigger>
