@@ -1,3 +1,4 @@
+import * as React from 'react'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from '../components/ThemeProvider'
@@ -19,11 +20,11 @@ export const metadata: Metadata = {
   description: 'Crypto App with built in high frequency dashboard and terminal',
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+interface RootLayoutProps {
   children: React.ReactNode
-}>) {
+}
+
+const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
     <html
       lang="en"
@@ -44,3 +45,5 @@ export default function RootLayout({
     </html>
   )
 }
+
+export default RootLayout

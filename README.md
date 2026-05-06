@@ -1,164 +1,190 @@
-# coin-gate
+# Coin Gate
 
-Coin Gate is a crypto market dashboard built with Next.js 16, React 19, TypeScript, and Tailwind CSS. It combines server-rendered market data from CoinGecko with live websocket updates, interactive candlestick charts, coin detail pages, converter tools, category and trending views, and a keyboard-friendly search modal.
+Coin Gate is a crypto market dashboard built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4. It combines server-rendered CoinGecko data, live websocket updates, candlestick charts, searchable market views, and reusable UI primitives built on Base UI.
 
-## What this project does
+## Highlights
 
-The app gives users a compact way to explore the crypto market:
+- Home dashboard with Bitcoin overview, trending coins, and top categories
+- `/coins` market table with pagination and route-pending feedback
+- `/coins/[id]` detail page with live price updates, recent trades, and converter
+- Keyboard-first search modal with `Cmd+K` / `Ctrl+K`
+- Reusable chart, table, dialog, select, and pagination primitives
+- Reusable pending-navigation overlays that keep content visible while blocking interaction
 
-- Home page with featured coin overview, trending coins, and top categories
-- Coins listing page with pagination and market stats
-- Dynamic coin detail pages with chart data, live price updates, recent trades, and conversion tools
-- Search modal with `Cmd+K` / `Ctrl+K` support for quick navigation between coins
-- Reusable data table patterns and loading fallbacks for a smoother UI
+## Stack
 
-## Why this build is strong
-
-This project works well as a portfolio piece because it shows both frontend product work and real-world data integration:
-
-- Uses modern App Router patterns in Next.js 16
-- Blends server components, client components, route handlers, and streamed UI
-- Handles external API quirks from CoinGecko, including demo/pro differences and historical data limits
-- Combines REST data fetching with websocket-driven live updates
-- Includes responsive UI patterns, modal search, charts, tables, and keyboard interactions
-- Shows practical TypeScript usage across API responses, shared UI props, and stateful client logic
-
-## Tech stack
-
-- Next.js 16.2.4
-- React 19
-- TypeScript 5
-- Tailwind CSS 4
-- shadcn/ui
-- Base UI React primitives
-- lightweight-charts
+- Next.js `16.2.4`
+- React `19.2.4`
+- TypeScript `5`
+- Tailwind CSS `4`
+- `@base-ui/react`
+- `lightweight-charts`
+- `next-themes`
 - CoinGecko REST API
 - CoinGecko websocket stream
-- Bun
 
-## Architecture notes
-
-### Server-side data layer
-
-The project uses a shared `fetcher` in `lib/coinGecko.action.ts` to talk to CoinGecko. It:
-
-- normalizes API URLs
-- switches between demo and pro header formats
-- retries demo-key requests against the correct base URL
-- falls back from unsupported OHLC `max` history to `365` days for demo usage
-
-### Live market features
-
-`hooks/useCoinGeckoWebSocket.ts` subscribes to CoinGecko stream channels for:
-
-- live price changes
-- recent on-chain trades
-- OHLCV updates for active coin charts
-
-### UI patterns
-
-The app mixes:
-
-- server-rendered pages for initial market data
-- client-side interactive charts and live updates
-- reusable tables for categories, trending assets, trades, and coin listings
-- modal search with keyboard navigation
-
-## Key features
-
-### 1. Market dashboard
-
-The home page highlights:
-
-- Bitcoin overview with candlestick chart
-- trending tokens
-- top crypto categories
-
-### 2. Coin explorer
-
-The `/coins` route lists coins with:
-
-- market cap rank
-- token info
-- price
-- 24h change
-- market cap
-- pagination
-
-### 3. Coin detail experience
-
-Each `/coins/[id]` page includes:
-
-- live price card
-- chart period switching
-- recent trade feed
-- converter
-- key project and market metadata
-
-### 4. Search modal
-
-The search modal supports:
-
-- opening by click, `Cmd+K`, or `Ctrl+K`
-- trending defaults when empty
-- live CoinGecko search by name or symbol
-- keyboard up/down navigation
-- Enter to open selected result
-
-## Environment variables
-
-Create `.env.local` with:
-
-```env
-COIN_GECKO_API_KEY=your_key_here
-NEXT_PUBLIC_COIN_GECKO_API_KEY=your_key_here
-COIN_GECKO_API_URL=https://pro-api.coingecko.com/api/v3
-NEXT_PUBLIC_COINGECKO_WEBSOCKET_URL=wss://stream.coingecko.com/v1
-```
-
-### Important note
-
-If you are using a CoinGecko Demo key, CoinGecko expects the demo REST base URL. The app contains fallback handling for demo/pro mismatch, but the clean setup is still to use the correct API plan and endpoint combination.
-
-## Local development
-
-Run the app with Bun:
-
-```bash
-bun dev
-```
-
-Open:
-
-```txt
-http://localhost:3000
-```
-
-Other useful commands:
-
-```bash
-bunx tsc --noEmit
-bun run fmt
-bun run fmt:check
-```
-
-## Project structure
+## Project Structure
 
 ```txt
 app/
   api/search/route.ts
   coins/
+    [id]/page.tsx
+    page.tsx
+  globals.css
+  layout.tsx
   page.tsx
+
+api/
+  coinGecko.api.ts
+
 components/
   home/
+  navigation/
+  search/
   ui/
-  SearchModal.tsx
-  CandleStrickChart.tsx
+  CandleStickChart.tsx
+  CoinHeader.tsx
+  CoinPagination.tsx
   Converter.tsx
+  DataTable.tsx
+  Header.tsx
   LiveDataWrapper.tsx
+  SearchModal.tsx
+  ThemeProvider.tsx
+  ThemeToggle.tsx
+
 hooks/
+  useCandlestickChart.ts
+  useCandlestickData.ts
+  useCandlestickSeries.ts
   useCoinGeckoWebSocket.ts
-lib/
-  coinGecko.action.ts
+  useCoinTableColumn.tsx
+  useDebouncedValue.ts
+  useNavigationPending.ts
+  useSearchHotkey.ts
+  useSearchModal.ts
+  useSearchNavigation.ts
+  useSearchResults.ts
+
+utils/
+  candlestick.ts
+  coinDetailList.ts
   utils.ts
 ```
+
+## Architecture
+
+### Data layer
+
+[`api/coinGecko.api.ts`](./api/coinGecko.api.ts) centralizes REST access to CoinGecko.
+
+It currently handles:
+
+- URL normalization
+- demo vs pro API key header selection
+- retrying demo keys against the demo REST base URL
+- fallback from unsupported OHLC `days=max` requests to `365`
+
+### Live updates
+
+[`hooks/useCoinGeckoWebSocket.ts`](./hooks/useCoinGeckoWebSocket.ts) subscribes to:
+
+- live price updates
+- on-chain trades
+- live OHLCV data for chart refreshes
+
+### UI composition
+
+Recent refactors split large files into smaller pieces:
+
+- candlestick chart state, chart setup, and series sync live in separate hooks
+- search modal logic is split into focused hooks
+- `dialog`, `pagination`, `select`, and `table` expose compound APIs
+- pending-navigation feedback is reusable across links, tables, and modal result lists
+
+## Reusable UX Patterns
+
+### Pending navigation overlays
+
+When a route transition is slow, users now get immediate feedback instead of dead clicks.
+
+Shared pieces:
+
+- [`hooks/useNavigationPending.ts`](./hooks/useNavigationPending.ts)
+- [`components/ui/loading-overlay.tsx`](./components/ui/loading-overlay.tsx)
+- [`components/navigation/PendingNavigationBoundary.tsx`](./components/navigation/PendingNavigationBoundary.tsx)
+- [`components/navigation/PendingNavigationLink.tsx`](./components/navigation/PendingNavigationLink.tsx)
+
+Current usage:
+
+- trending coins table
+- search modal result list
+- all coins table links
+- all coins pagination
+
+## Environment Variables
+
+Create `.env.local`:
+
+```env
+COIN_GECKO_API_KEY=your_key_here
+COIN_GECKO_API_URL=https://pro-api.coingecko.com/api/v3
+NEXT_PUBLIC_COINGECKO_API_KEY=your_key_here
+NEXT_PUBLIC_COINGECKO_WEBSOCKET_URL=wss://stream.coingecko.com/v1
+```
+
+Notes:
+
+- `COIN_GECKO_API_URL` can point to CoinGecko Pro.
+- If you use a demo key with the pro base URL, the fetch layer retries against the demo REST endpoint automatically.
+
+## Local Development
+
+Install dependencies, then run:
+
+```bash
+npm run dev
+```
+
+Open `http://localhost:3000`.
+
+Useful commands:
+
+```bash
+npm run build
+npm run fmt
+npm run fmt:check
+./node_modules/.bin/tsc --noEmit
+```
+
+## Current Feature Map
+
+### Home
+
+- Bitcoin overview card
+- historical candlestick chart
+- trending coins table
+- top categories table
+
+### All Coins
+
+- paginated market table
+- market cap, price, and 24h change view
+- pending loader overlay during row navigation and pagination
+
+### Coin Details
+
+- live websocket price refresh
+- live trade table
+- live chart updates
+- converter
+- project metadata and external links
+
+### Search
+
+- open by click or keyboard shortcut
+- trending defaults when query is empty
+- debounced search requests
+- keyboard navigation with Enter-to-open
+- pending loader during route transition

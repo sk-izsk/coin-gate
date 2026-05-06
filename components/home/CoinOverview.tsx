@@ -1,10 +1,12 @@
-import { fetcher } from '@/lib/coinGecko.action'
-import { formatCurrency } from '@/lib/utils'
+import * as React from 'react'
+
+import { fetcher } from '@/api/coinGecko.api'
+import { formatCurrency } from '@/utils/utils'
 import Image from 'next/image'
-import { CandleStickChart } from '../CandleStrickChart'
+import { CandleStickChart } from '../CandleStickChart'
 import { CoinOverviewFallback } from './Fallback'
 
-const CoinOverview = async () => {
+const CoinOverview: React.FC = async () => {
   try {
     const [coin, coinOHLCData] = await Promise.all([
       fetcher<CoinDetailsData>('/coins/bitcoin', {
@@ -26,7 +28,7 @@ const CoinOverview = async () => {
               <p>
                 {coin.name} / {coin.symbol.toUpperCase()}
               </p>
-              <h1>{formatCurrency(coin.market_data.current_price.usd)}</h1>
+              <h1>{formatCurrency({ value: coin.market_data.current_price.usd })}</h1>
             </div>
           </div>
         </CandleStickChart>

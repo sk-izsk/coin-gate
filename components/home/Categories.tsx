@@ -1,11 +1,13 @@
-import { cn, formatCurrency, formatPercentage } from '@/lib/utils'
+import * as React from 'react'
+
+import { cn, formatCurrency, formatPercentage } from '@/utils/utils'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 import Image from 'next/image'
-import { fetcher } from '../../lib/coinGecko.action'
+import { fetcher } from '../../api/coinGecko.api'
 import { DataTable } from '../DataTable'
 import { CategoriesFallback } from './Fallback'
 
-const Categories = async () => {
+const Categories: React.FC = async () => {
   try {
     const categories = await fetcher<Category[]>('/coins/categories')
 
@@ -46,12 +48,12 @@ const Categories = async () => {
       {
         header: 'Market Cap',
         cellClassName: 'market-cap-cell',
-        cell: (category) => formatCurrency(category.market_cap),
+        cell: (category) => formatCurrency({ value: category.market_cap }),
       },
       {
         header: '24h Volume',
         cellClassName: 'volume-cell',
-        cell: (category) => formatCurrency(category.volume_24h),
+        cell: (category) => formatCurrency({ value: category.volume_24h }),
       },
     ]
 

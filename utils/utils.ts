@@ -6,12 +6,14 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))
 }
 
-export const formatCurrency = (
-  value: number | null | undefined,
-  digits?: number,
-  currency?: string,
-  showSymbol?: boolean,
-) => {
+interface FormatCurrencyProps {
+  value: number | null | undefined
+  digits?: number
+  currency?: string
+  showSymbol?: boolean
+}
+
+export const formatCurrency = ({ value, digits, currency, showSymbol }: FormatCurrencyProps) => {
   if (value === null || value === undefined || isNaN(value)) {
     return showSymbol !== false ? '$0.00' : '0.00'
   }
@@ -51,7 +53,7 @@ export const trendingClasses = (value: number) => {
 export const timeAgo = (date: string | number | Date): string => {
   const now = new Date()
   const past = new Date(date)
-  const diff = now.getTime() - past.getTime() // difference in ms
+  const diff = now.getTime() - past.getTime()
 
   const seconds = Math.floor(diff / 1000)
   const minutes = Math.floor(seconds / 60)
@@ -59,20 +61,29 @@ export const timeAgo = (date: string | number | Date): string => {
   const days = Math.floor(hours / 24)
   const weeks = Math.floor(days / 7)
 
-  if (seconds < 60) return 'just now'
-  if (minutes < 60) return `${minutes} min`
-  if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''}`
-  if (days < 7) return `${days} day${days > 1 ? 's' : ''}`
-  if (weeks < 4) return `${weeks} week${weeks > 1 ? 's' : ''}`
+  if (seconds < 60) {
+    return 'just now'
+  }
+  if (minutes < 60) {
+    return `${minutes} min`
+  }
+  if (hours < 24) {
+    return `${hours} hour${hours > 1 ? 's' : ''}`
+  }
+  if (days < 7) {
+    return `${days} day${days > 1 ? 's' : ''}`
+  }
+  if (weeks < 4) {
+    return `${weeks} week${weeks > 1 ? 's' : ''}`
+  }
 
-  // Format date as YYYY-MM-DD
   return past.toISOString().split('T')[0]
 }
 
 export const convertOHLCData = (data: OHLCData[]) => {
   return data
     .map((d) => ({
-      time: d[0] as Time, // ensure seconds, not ms
+      time: d[0] as Time,
       open: d[1],
       high: d[2],
       low: d[3],
@@ -82,10 +93,16 @@ export const convertOHLCData = (data: OHLCData[]) => {
 }
 
 export const ELLIPSIS = 'ellipsis' as const
-export const buildPageNumbers = (
-  currentPage: number,
-  totalPages: number,
-): (number | typeof ELLIPSIS)[] => {
+
+interface BuildPageNumberProps {
+  currentPage: number
+  totalPages: number
+}
+
+export const buildPageNumbers = ({
+  currentPage,
+  totalPages,
+}: BuildPageNumberProps): (number | typeof ELLIPSIS)[] => {
   const MAX_VISIBLE_PAGES = 5
 
   const pages: (number | typeof ELLIPSIS)[] = []

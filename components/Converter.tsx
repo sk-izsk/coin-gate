@@ -1,19 +1,14 @@
 'use client'
 
+import * as React from 'react'
 import { Input } from '@/components/ui/input'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency } from '@/utils/utils'
 import Image from 'next/image'
 import { useState } from 'react'
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { Select } from '@/components/ui/select'
 
-export const Converter = ({ symbol, icon, priceList }: ConverterProps) => {
+export const Converter: React.FC<ConverterProps> = ({ symbol, icon, priceList }) => {
   const [currency, setCurrency] = useState('usd')
   const [amount, setAmount] = useState('10')
 
@@ -45,21 +40,28 @@ export const Converter = ({ symbol, icon, priceList }: ConverterProps) => {
         </div>
 
         <div className="output-wrapper">
-          <p>{formatCurrency(convertedPrice, 2, currency, false)}</p>
+          <p>
+            {formatCurrency({
+              value: convertedPrice,
+              digits: 2,
+              currency,
+              showSymbol: false,
+            })}
+          </p>
 
           <Select value={currency} onValueChange={(value) => setCurrency(value ?? 'usd')}>
-            <SelectTrigger className="select-trigger" value={currency}>
-              <SelectValue placeholder="Select" className="select-value">
+            <Select.Trigger className="select-trigger" value={currency}>
+              <Select.Value placeholder="Select" className="select-value">
                 {currency.toUpperCase()}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent className="select-content" data-converter>
+              </Select.Value>
+            </Select.Trigger>
+            <Select.Content className="select-content" data-converter>
               {Object.keys(priceList).map((currencyCode) => (
-                <SelectItem value={currencyCode} key={currencyCode} className="select-item">
+                <Select.Item value={currencyCode} key={currencyCode} className="select-item">
                   {currencyCode.toUpperCase()}
-                </SelectItem>
+                </Select.Item>
               ))}
-            </SelectContent>
+            </Select.Content>
           </Select>
         </div>
       </div>

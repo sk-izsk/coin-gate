@@ -1,14 +1,21 @@
 'use client'
 
+import * as React from 'react'
 import { Separator } from '@/components/ui/separator'
 import { useCoinGeckoWebSocket } from '@/hooks/useCoinGeckoWebSocket'
-import { formatCurrency, timeAgo } from '@/lib/utils'
+import { formatCurrency, timeAgo } from '@/utils/utils'
 import { useState } from 'react'
-import { CandleStickChart } from './CandleStrickChart'
+import { CandleStickChart } from './CandleStickChart'
 import { CoinHeader } from './CoinHeader'
 import { DataTable } from './DataTable'
 
-const LiveDataWrapper = ({ children, coinId, poolId, coin, coinOHLCData }: LiveDataProps) => {
+const LiveDataWrapper: React.FC<LiveDataProps> = ({
+  children,
+  coinId,
+  poolId,
+  coin,
+  coinOHLCData,
+}) => {
   const [liveInterval, setLiveInterval] = useState<'1s' | '1m'>('1s')
   const { trades, ohlcv, price } = useCoinGeckoWebSocket({ coinId, poolId, liveInterval })
 
@@ -16,7 +23,7 @@ const LiveDataWrapper = ({ children, coinId, poolId, coin, coinOHLCData }: LiveD
     {
       header: 'Price',
       cellClassName: 'price-cell',
-      cell: (trade) => (trade.price ? formatCurrency(trade.price) : '-'),
+      cell: (trade) => (trade.price ? formatCurrency({ value: trade.price }) : '-'),
     },
     {
       header: 'Amount',
@@ -26,7 +33,7 @@ const LiveDataWrapper = ({ children, coinId, poolId, coin, coinOHLCData }: LiveD
     {
       header: 'Value',
       cellClassName: 'value-cell',
-      cell: (trade) => (trade.value ? formatCurrency(trade.value) : '-'),
+      cell: (trade) => (trade.value ? formatCurrency({ value: trade.value }) : '-'),
     },
     {
       header: 'Buy/Sell',

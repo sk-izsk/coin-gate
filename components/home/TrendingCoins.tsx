@@ -1,12 +1,15 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { cn, formatCurrency, formatPercentage } from '@/lib/utils'
+import * as React from 'react'
+
+import { cn, formatCurrency, formatPercentage } from '@/utils/utils'
 import { TrendingDown, TrendingUp } from 'lucide-react'
-import { fetcher } from '../../lib/coinGecko.action'
+import Image from 'next/image'
+import { fetcher } from '../../api/coinGecko.api'
 import { DataTable } from '../DataTable'
+import { PendingNavigationBoundary } from '../navigation/PendingNavigationBoundary'
+import { PendingNavigationLink } from '../navigation/PendingNavigationLink'
 import { TrendingCoinsFallback } from './Fallback'
 
-const TrendingCoins = async () => {
+const TrendingCoins: React.FC = async () => {
   let trendingCoins
 
   try {
@@ -24,10 +27,10 @@ const TrendingCoins = async () => {
         const item = coin.item
 
         return (
-          <Link href={`/coins/${item.id}`} className="min-w-0">
+          <PendingNavigationLink href={`/coins/${item.id}`} className="min-w-0">
             <Image src={item.large} alt={item.name} width={36} height={36} />
             <p className="truncate">{item.name}</p>
-          </Link>
+          </PendingNavigationLink>
         )
       },
     },
@@ -55,7 +58,7 @@ const TrendingCoins = async () => {
     {
       header: 'Price',
       cellClassName: 'price-cell',
-      cell: (coin) => formatCurrency(coin.item.data.price),
+      cell: (coin) => formatCurrency({ value: coin.item.data.price }),
     },
   ]
 
@@ -63,14 +66,19 @@ const TrendingCoins = async () => {
     <div id="trending-coins">
       <h4>Trending Coins</h4>
 
-      <DataTable
-        data={trendingCoins.coins.slice(0, 6) || []}
-        columns={columns}
-        rowKey={(coin) => coin.item.id}
-        tableClassName="trending-coins-table"
-        headerCellClassName="py-3!"
-        bodyCellClassName="py-2!"
-      />
+      <PendingNavigationBoundary
+        className="rounded-xl overflow-hidden"
+        overlayLabel="Opening coin details..."
+      >
+        <DataTable
+          data={trendingCoins.coins.slice(0, 6) || []}
+          columns={columns}
+          rowKey={(coin) => coin.item.id}
+          tableClassName="trending-coins-table"
+          headerCellClassName="py-3!"
+          bodyCellClassName="py-2!"
+        />
+      </PendingNavigationBoundary>
     </div>
   )
 }

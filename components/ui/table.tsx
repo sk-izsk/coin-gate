@@ -1,10 +1,8 @@
-'use client'
-
 import * as React from 'react'
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/utils'
 
-const Table = ({ className, ...props }: React.ComponentProps<'table'>) => {
+const TableRoot = ({ className, ...props }: React.ComponentProps<'table'>) => {
   return (
     <div data-slot="table-container" className="relative w-full overflow-x-auto">
       <table
@@ -89,4 +87,14 @@ const TableCaption = ({ className, ...props }: React.ComponentProps<'caption'>) 
   )
 }
 
-export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption }
+const Table = Object.assign(TableRoot, {
+  Header: TableHeader,
+  Body: TableBody,
+  Footer: TableFooter,
+  Row: TableRow,
+  Head: TableHead,
+  Cell: TableCell,
+  Caption: TableCaption,
+})
+
+export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow }
