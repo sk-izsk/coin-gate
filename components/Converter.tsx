@@ -5,13 +5,7 @@ import { formatCurrency } from '@/utils/utils'
 import Image from 'next/image'
 import { useState } from 'react'
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { Select } from '@/components/ui/select'
 
 export const Converter = ({ symbol, icon, priceList }: ConverterProps) => {
   const [currency, setCurrency] = useState('usd')
@@ -55,18 +49,18 @@ export const Converter = ({ symbol, icon, priceList }: ConverterProps) => {
           </p>
 
           <Select value={currency} onValueChange={(value) => setCurrency(value ?? 'usd')}>
-            <SelectTrigger className="select-trigger" value={currency}>
-              <SelectValue placeholder="Select" className="select-value">
+            <Select.Trigger className="select-trigger" value={currency}>
+              <Select.Value placeholder="Select" className="select-value">
                 {currency.toUpperCase()}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent className="select-content" data-converter>
+              </Select.Value>
+            </Select.Trigger>
+            <Select.Content className="select-content" data-converter>
               {Object.keys(priceList).map((currencyCode) => (
-                <SelectItem value={currencyCode} key={currencyCode} className="select-item">
+                <Select.Item value={currencyCode} key={currencyCode} className="select-item">
                   {currencyCode.toUpperCase()}
-                </SelectItem>
+                </Select.Item>
               ))}
-            </SelectContent>
+            </Select.Content>
           </Select>
         </div>
       </div>

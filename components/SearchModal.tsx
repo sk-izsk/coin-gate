@@ -1,6 +1,6 @@
 'use client'
 
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
 
@@ -25,16 +25,16 @@ export const SearchModal = () => {
   return (
     <div id="search-modal">
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger
+        <Dialog.Trigger
           render={<button type="button" className="trigger" aria-label="Open search" />}
         >
           <Search size={18} className="md:mr-2 text-purple-100/70" />
           <span className="trigger-label">Search for a token</span>
           <span className="kbd">Cmd K</span>
-        </DialogTrigger>
+        </Dialog.Trigger>
 
-        <DialogContent className="dialog" showCloseButton={false}>
-          <DialogTitle className="sr-only">Search coins</DialogTitle>
+        <Dialog.Content className="dialog" showCloseButton={false}>
+          <Dialog.Title className="sr-only">Search coins</Dialog.Title>
 
           <div className="search-shell">
             <div className="search-head">
@@ -61,7 +61,7 @@ export const SearchModal = () => {
               />
             </div>
           </div>
-        </DialogContent>
+        </Dialog.Content>
       </Dialog>
     </div>
   )
