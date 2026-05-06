@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useTransition } from 'react'
 
 import { convertOHLCData } from '@/lib/utils'
 import { CandlestickSeries, createChart, IChartApi, ISeriesApi } from 'lightweight-charts'
+import { useTheme } from 'next-themes'
 import {
   getCandlestickConfig,
   getChartConfig,
@@ -24,6 +25,8 @@ export const CandleStickChart = ({
   liveInterval,
   setLiveInterval,
 }: CandlestickChartProps) => {
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
   const chartContainerRef = useRef<HTMLDivElement | null>(null)
   const chartRef = useRef<IChartApi | null>(null)
   const candleSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null)
@@ -65,10 +68,10 @@ export const CandleStickChart = ({
     const showTime = ['daily', 'weekly', 'monthly'].includes(period)
 
     const chart = createChart(container, {
-      ...getChartConfig(height, showTime),
+      ...getChartConfig(height, isDark, showTime),
       width: container.clientWidth,
     })
-    const series = chart.addSeries(CandlestickSeries, getCandlestickConfig())
+    const series = chart.addSeries(CandlestickSeries, getCandlestickConfig(isDark))
 
     const convertedToSeconds = ohlcData.map(
       (item) => [Math.floor(item[0] / 1000), item[1], item[2], item[3], item[4]] as OHLCData,
@@ -92,7 +95,7 @@ export const CandleStickChart = ({
       chartRef.current = null
       candleSeriesRef.current = null
     }
-  }, [height, period])
+  }, [height, period, isDark])
 
   useEffect(() => {
     if (!candleSeriesRef.current) {

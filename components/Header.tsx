@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import React from 'react'
 import { cn } from '../lib/utils'
 import { SearchModal } from './SearchModal'
+import { ThemeToggle } from './ThemeToggle'
 
 interface Props {}
 
@@ -20,10 +21,10 @@ export const Header: React.FC<Props> = () => {
             alt="Coin gate logo"
             width={122}
             height={30}
-            className="h-auto w-auto"
+            className="h-auto w-auto dark:invert-0 invert"
           />
         </Link>
-        <nav>
+        <nav className="flex items-center gap-4">
           <Link
             className={cn('nav-link', {
               'is-active': pathName === '/',
@@ -42,6 +43,7 @@ export const Header: React.FC<Props> = () => {
           >
             All coins
           </Link>
+          <ThemeToggle />
         </nav>
       </div>
     </header>
