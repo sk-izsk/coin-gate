@@ -14,7 +14,13 @@ export const Header: React.FC<Props> = () => {
     <header>
       <div className="main-container inner">
         <Link href="/">
-          <Image src="/logo.svg" alt="Coin gate logo" width={132} height={40} />
+          <Image
+            src="/logo.svg"
+            alt="Coin gate logo"
+            width={122}
+            height={30}
+            className="h-auto w-auto"
+          />
         </Link>
         <nav>
           <Link
