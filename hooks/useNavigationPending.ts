@@ -1,7 +1,7 @@
 'use client'
 
-import { usePathname, useSearchParams } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 interface UseNavigationPendingProps {
   delay?: number
@@ -9,14 +9,12 @@ interface UseNavigationPendingProps {
 
 export const useNavigationPending = ({ delay = 120 }: UseNavigationPendingProps = {}) => {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const [isPending, setIsPending] = useState(false)
   const [showPending, setShowPending] = useState(false)
 
-  const routeKey = useMemo(() => {
-    const params = searchParams.toString()
-    return params ? `${pathname}?${params}` : pathname
-  }, [pathname, searchParams])
+  // Avoid useSearchParams here so shared layout/client wrappers stay prerenderable in Next 16.
+  const routeKey =
+    typeof window === 'undefined' ? pathname : `${pathname}${window.location.search}`
 
   useEffect(() => {
     setIsPending(false)

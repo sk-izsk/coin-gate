@@ -1,7 +1,12 @@
 'use client'
 
 import * as React from 'react'
-import { Dialog } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { LoadingOverlay } from '@/components/ui/loading-overlay'
 import { useNavigationPending } from '@/hooks/useNavigationPending'
@@ -71,22 +76,22 @@ const SearchModalPanel: React.FC<SearchModalPanelProps> = () => {
 
   return (
     <Dialog open={modal.open} onOpenChange={modal.setOpen}>
-      <Dialog.Trigger
+      <DialogTrigger
         render={<button type="button" className="trigger" aria-label="Open search" />}
       >
         <Search size={18} className="md:mr-2 text-purple-100/70" />
         <span className="trigger-label">Search for a token</span>
         <span className="kbd">Cmd K</span>
-      </Dialog.Trigger>
+      </DialogTrigger>
 
-      <Dialog.Content className="dialog" showCloseButton={false}>
-        <Dialog.Title className="sr-only">Search coins</Dialog.Title>
+      <DialogContent className="dialog" showCloseButton={false}>
+        <DialogTitle className="sr-only">Search coins</DialogTitle>
 
         <div className="relative">
           <SearchModalBody {...modal} />
           {showPending && <LoadingOverlay label="Opening coin details..." className="rounded-xl" />}
         </div>
-      </Dialog.Content>
+      </DialogContent>
     </Dialog>
   )
 }
