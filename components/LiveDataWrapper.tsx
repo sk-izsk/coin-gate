@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator'
 import { useCoinGeckoWebSocket } from '@/hooks/useCoinGeckoWebSocket'
 import { formatCurrency, timeAgo } from '@/utils/utils'
 import { useState } from 'react'
-import { CandleStickChart } from './CandleStrickChart'
+import { CandleStickChart } from './CandleStickChart'
 import { CoinHeader } from './CoinHeader'
 import { DataTable } from './DataTable'
 

@@ -1,7 +1,7 @@
 import { fetcher } from '@/api/coinGecko.api'
 import { formatCurrency } from '@/utils/utils'
 import Image from 'next/image'
-import { CandleStickChart } from '../CandleStrickChart'
+import { CandleStickChart } from '../CandleStickChart'
 import { CoinOverviewFallback } from './Fallback'
 
 const CoinOverview = async () => {
