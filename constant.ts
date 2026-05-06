@@ -20,76 +20,83 @@ export const navItems = [
   },
 ]
 
-const CHART_COLORS = {
-  background: '#0b1116',
-  text: '#8f9fb1',
-  grid: '#1a2332',
-  border: '#1a2332',
-  crosshairVertical: '#ffffff40',
-  crosshairHorizontal: '#ffffff20',
+const getChartColors = (isDark: boolean) => ({
+  background: isDark ? '#0b1116' : '#ffffff',
+  text: isDark ? '#8f9fb1' : '#475569',
+  grid: isDark ? '#1a2332' : '#f1f5f9',
+  border: isDark ? '#1a2332' : '#e2e8f0',
+  crosshairVertical: isDark ? '#ffffff40' : '#00000040',
+  crosshairHorizontal: isDark ? '#ffffff20' : '#00000020',
   candleUp: '#158A6E',
   candleDown: '#EB1C36',
-} as const
-
-export const getCandlestickConfig = (): CandlestickSeriesPartialOptions => ({
-  upColor: CHART_COLORS.candleUp,
-  downColor: CHART_COLORS.candleDown,
-  wickUpColor: CHART_COLORS.candleUp,
-  wickDownColor: CHART_COLORS.candleDown,
-  borderVisible: true,
-  wickVisible: true,
 })
+
+export const getCandlestickConfig = (isDark: boolean): CandlestickSeriesPartialOptions => {
+  const colors = getChartColors(isDark)
+  return {
+    upColor: colors.candleUp,
+    downColor: colors.candleDown,
+    wickUpColor: colors.candleUp,
+    wickDownColor: colors.candleDown,
+    borderVisible: true,
+    wickVisible: true,
+  }
+}
 
 export const getChartConfig = (
   height: number,
+  isDark: boolean,
   timeVisible: boolean = true,
-): DeepPartial<ChartOptions> => ({
-  width: 0,
-  height,
-  layout: {
-    background: { type: ColorType.Solid, color: CHART_COLORS.background },
-    textColor: CHART_COLORS.text,
-    fontSize: 12,
-    fontFamily: 'Inter, Roboto, "Helvetica Neue", Arial',
-  },
-  grid: {
-    vertLines: { visible: false },
-    horzLines: {
-      visible: true,
-      color: CHART_COLORS.grid,
-      style: 2,
+): DeepPartial<ChartOptions> => {
+  const colors = getChartColors(isDark)
+  return {
+    width: 0,
+    height,
+    layout: {
+      background: { type: ColorType.Solid, color: colors.background },
+      textColor: colors.text,
+      fontSize: 12,
+      fontFamily: 'Inter, Roboto, "Helvetica Neue", Arial',
     },
-  },
-  rightPriceScale: {
-    borderColor: CHART_COLORS.border,
-  },
-  timeScale: {
-    borderColor: CHART_COLORS.border,
-    timeVisible,
-    secondsVisible: false,
-  },
-  handleScroll: true,
-  handleScale: true,
-  crosshair: {
-    mode: 1,
-    vertLine: {
-      visible: true,
-      color: CHART_COLORS.crosshairVertical,
-      width: 1,
-      style: 0,
+    grid: {
+      vertLines: { visible: false },
+      horzLines: {
+        visible: true,
+        color: colors.grid,
+        style: 2,
+      },
     },
-    horzLine: {
-      visible: true,
-      color: CHART_COLORS.crosshairHorizontal,
-      width: 1,
-      style: 0,
+    rightPriceScale: {
+      borderColor: colors.border,
     },
-  },
-  localization: {
-    priceFormatter: (price: number) =>
-      '$' + price.toLocaleString(undefined, { maximumFractionDigits: 2 }),
-  },
-})
+    timeScale: {
+      borderColor: colors.border,
+      timeVisible,
+      secondsVisible: false,
+    },
+    handleScroll: true,
+    handleScale: true,
+    crosshair: {
+      mode: 1,
+      vertLine: {
+        visible: true,
+        color: colors.crosshairVertical,
+        width: 1,
+        style: 0,
+      },
+      horzLine: {
+        visible: true,
+        color: colors.crosshairHorizontal,
+        width: 1,
+        style: 0,
+      },
+    },
+    localization: {
+      priceFormatter: (price: number) =>
+        '$' + price.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+    },
+  }
+}
 
 export const PERIOD_CONFIG: Record<Period, { days: number | string }> = {
   daily: { days: 1 },
