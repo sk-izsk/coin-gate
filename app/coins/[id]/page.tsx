@@ -1,9 +1,9 @@
+import { fetcher, getPools } from '@/api/coinGecko.api'
 import { Converter } from '@/components/Converter'
 import LiveDataWrapper from '@/components/LiveDataWrapper'
-import { fetcher, getPools } from '@/lib/coinGecko.action'
-import { formatCurrency } from '@/lib/utils'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
+import { coinDetailList } from '../../../utils/coinDetailList'
 
 const Page = async ({ params }: NextPageProps) => {
   const { id } = await params
@@ -27,39 +27,7 @@ const Page = async ({ params }: NextPageProps) => {
 
   const pool = await getPools(id, network, contractAddress)
 
-  const coinDetails = [
-    {
-      label: 'Market Cap',
-      value: formatCurrency(coinData.market_data.market_cap.usd),
-    },
-    {
-      label: 'Market Cap Rank',
-      value: `# ${coinData.market_cap_rank}`,
-    },
-    {
-      label: 'Total Volume',
-      value: formatCurrency(coinData.market_data.total_volume.usd),
-    },
-    {
-      label: 'Website',
-      value: '-',
-      link: coinData.links.homepage[0],
-      linkText: 'Homepage',
-    },
-    {
-      label: 'Explorer',
-      value: '-',
-      link: coinData.links.blockchain_site[0],
-      linkText: 'Explorer',
-    },
-    {
-      label: 'Community',
-      value: '-',
-      link: coinData.links.subreddit_url,
-      linkText: 'Community',
-    },
-  ]
-
+  const coinDetails = coinDetailList(coinData)
   return (
     <main id="coin-details-page">
       <section className="primary">

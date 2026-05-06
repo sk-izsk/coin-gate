@@ -33,25 +33,38 @@ const getApiKeyHeader = (baseUrl: string) =>
     : 'x-cg-demo-api-key'
 
 const getErrorMessage = (errorBody: unknown, fallback: string) => {
-  if (typeof errorBody === 'string') return errorBody
+  if (typeof errorBody === 'string') {
+    return errorBody
+  }
 
-  if (!errorBody || typeof errorBody !== 'object') return fallback
+  if (!errorBody || typeof errorBody !== 'object') {
+    return fallback
+  }
 
   const body = errorBody as {
     error?: string | { status?: { error_message?: string } }
     status?: { error_message?: string }
   }
 
-  if (typeof body.error === 'string') return body.error
+  if (typeof body.error === 'string') {
+    return body.error
+  }
   if (body.error && typeof body.error === 'object' && body.error.status?.error_message) {
     return body.error.status.error_message
   }
-  if (body.status?.error_message) return body.status.error_message
+  if (body.status?.error_message) {
+    return body.status.error_message
+  }
 
   return fallback
 }
 
-const makeRequest = async (baseUrl: string, endpoint: string, params?: QueryParams, revalidate = 60) => {
+const makeRequest = async (
+  baseUrl: string,
+  endpoint: string,
+  params?: QueryParams,
+  revalidate = 60,
+) => {
   return fetch(buildUrl(baseUrl, endpoint, params), {
     headers: {
       [getApiKeyHeader(baseUrl)]: API_KEY,
@@ -113,7 +126,9 @@ export const fetcher = async <T>(
       errorBody = await response.json().catch(() => ({}))
     }
 
-    throw new Error(`API Error: ${response.status}: ${getErrorMessage(errorBody, response.statusText)} `)
+    throw new Error(
+      `API Error: ${response.status}: ${getErrorMessage(errorBody, response.statusText)} `,
+    )
   }
 
   return response.json()

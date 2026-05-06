@@ -2,12 +2,18 @@
 
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { cn, formatCurrency, formatPercentage } from '@/lib/utils'
+import { cn, formatCurrency, formatPercentage } from '@/utils/utils'
 import { Search, TrendingDown, TrendingUp } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { type KeyboardEvent as ReactKeyboardEvent, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  type KeyboardEvent as ReactKeyboardEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 type SearchResultItem = {
   id: string
@@ -153,9 +159,7 @@ export const SearchModal = () => {
 
     if (event.key === 'ArrowUp') {
       event.preventDefault()
-      setSelectedIndex((current) =>
-        current <= 0 ? searchState.items.length - 1 : current - 1,
-      )
+      setSelectedIndex((current) => (current <= 0 ? searchState.items.length - 1 : current - 1))
       return
     }
 
@@ -230,7 +234,7 @@ export const SearchModal = () => {
                         </div>
 
                         <div className="coin-price">
-                          {coin.price === null ? '-' : formatCurrency(coin.price)}
+                          {coin.price === null ? '-' : formatCurrency({ value: coin.price })}
                         </div>
 
                         <div

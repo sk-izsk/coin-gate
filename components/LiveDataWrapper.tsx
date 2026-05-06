@@ -2,7 +2,7 @@
 
 import { Separator } from '@/components/ui/separator'
 import { useCoinGeckoWebSocket } from '@/hooks/useCoinGeckoWebSocket'
-import { formatCurrency, timeAgo } from '@/lib/utils'
+import { formatCurrency, timeAgo } from '@/utils/utils'
 import { useState } from 'react'
 import { CandleStickChart } from './CandleStrickChart'
 import { CoinHeader } from './CoinHeader'
@@ -16,7 +16,7 @@ const LiveDataWrapper = ({ children, coinId, poolId, coin, coinOHLCData }: LiveD
     {
       header: 'Price',
       cellClassName: 'price-cell',
-      cell: (trade) => (trade.price ? formatCurrency(trade.price) : '-'),
+      cell: (trade) => (trade.price ? formatCurrency({ value: trade.price }) : '-'),
     },
     {
       header: 'Amount',
@@ -26,7 +26,7 @@ const LiveDataWrapper = ({ children, coinId, poolId, coin, coinOHLCData }: LiveD
     {
       header: 'Value',
       cellClassName: 'value-cell',
-      cell: (trade) => (trade.value ? formatCurrency(trade.value) : '-'),
+      cell: (trade) => (trade.value ? formatCurrency({ value: trade.value }) : '-'),
     },
     {
       header: 'Buy/Sell',

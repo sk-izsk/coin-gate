@@ -1,4 +1,4 @@
-import { fetcher } from '@/lib/coinGecko.action'
+import { fetcher } from '@/api/coinGecko.api'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -31,7 +31,11 @@ export async function GET(request: Request) {
     }>('/search', { query }, 120)
 
     const matchedCoins = searchResults.coins
-      .sort((a, b) => (a.market_cap_rank ?? Number.MAX_SAFE_INTEGER) - (b.market_cap_rank ?? Number.MAX_SAFE_INTEGER))
+      .sort(
+        (a, b) =>
+          (a.market_cap_rank ?? Number.MAX_SAFE_INTEGER) -
+          (b.market_cap_rank ?? Number.MAX_SAFE_INTEGER),
+      )
       .slice(0, 8)
 
     if (!matchedCoins.length) {

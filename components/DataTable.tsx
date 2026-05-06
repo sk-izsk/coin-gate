@@ -1,11 +1,11 @@
-import { cn } from '../lib/utils'
+import { cn } from '../utils/utils'
 import {
-  Table as UITable,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
+  Table as UITable,
 } from './ui/table'
 
 export const DataTable = <T,>({

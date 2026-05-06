@@ -87,9 +87,13 @@ export const useCoinGeckoWebSocket = ({
   }, [])
 
   useEffect(() => {
-    if (!isWsReady) return
+    if (!isWsReady) {
+      return
+    }
     const ws = wsRef.current
-    if (!ws) return
+    if (!ws) {
+      return
+    }
 
     const send = (payload: Record<string, unknown>) => ws.send(JSON.stringify(payload))
 
@@ -105,7 +109,9 @@ export const useCoinGeckoWebSocket = ({
     }
 
     const subscribe = (channel: string, data?: Record<string, unknown>) => {
-      if (subscribed.current.has(channel)) return
+      if (subscribed.current.has(channel)) {
+        return
+      }
 
       send({ command: 'subscribe', identifier: JSON.stringify({ channel }) })
 

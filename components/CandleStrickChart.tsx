@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState, useTransition } from 'react'
 
-import { convertOHLCData } from '@/lib/utils'
+import { convertOHLCData } from '@/utils/utils'
 import { CandlestickSeries, createChart, IChartApi, ISeriesApi } from 'lightweight-charts'
 import { useTheme } from 'next-themes'
+import { fetcher } from '../api/coinGecko.api'
 import {
   getCandlestickConfig,
   getChartConfig,
@@ -12,7 +13,6 @@ import {
   PERIOD_BUTTONS,
   PERIOD_CONFIG,
 } from '../constant'
-import { fetcher } from '../lib/coinGecko.action'
 
 export const CandleStickChart = ({
   children,
@@ -63,7 +63,9 @@ export const CandleStickChart = ({
 
   useEffect(() => {
     const container = chartContainerRef.current
-    if (!container) return
+    if (!container) {
+      return
+    }
 
     const showTime = ['daily', 'weekly', 'monthly'].includes(period)
 
@@ -84,7 +86,9 @@ export const CandleStickChart = ({
     candleSeriesRef.current = series
 
     const observer = new ResizeObserver((entries) => {
-      if (!entries.length) return
+      if (!entries.length) {
+        return
+      }
       chart.applyOptions({ width: entries[0].contentRect.width })
     })
     observer.observe(container)

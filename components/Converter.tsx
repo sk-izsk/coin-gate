@@ -1,7 +1,7 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency } from '@/utils/utils'
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -45,7 +45,14 @@ export const Converter = ({ symbol, icon, priceList }: ConverterProps) => {
         </div>
 
         <div className="output-wrapper">
-          <p>{formatCurrency(convertedPrice, 2, currency, false)}</p>
+          <p>
+            {formatCurrency({
+              value: convertedPrice,
+              digits: 2,
+              currency,
+              showSymbol: false,
+            })}
+          </p>
 
           <Select value={currency} onValueChange={(value) => setCurrency(value ?? 'usd')}>
             <SelectTrigger className="select-trigger" value={currency}>

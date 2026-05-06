@@ -8,7 +8,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
-import { buildPageNumbers, cn, ELLIPSIS } from '@/lib/utils'
+import { buildPageNumbers, cn, ELLIPSIS } from '@/utils/utils'
 import { useRouter } from 'next/navigation'
 
 export const CoinsPagination = ({ currentPage, totalPages, hasMorePages }: Pagination) => {
@@ -18,7 +18,7 @@ export const CoinsPagination = ({ currentPage, totalPages, hasMorePages }: Pagin
     router.push(`/coins?page=${page}`)
   }
 
-  const pageNumbers = buildPageNumbers(currentPage, totalPages)
+  const pageNumbers = buildPageNumbers({ currentPage, totalPages })
   const isLastPage = !hasMorePages || currentPage === totalPages
 
   return (
