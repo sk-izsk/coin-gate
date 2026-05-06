@@ -32,6 +32,25 @@ const getApiKeyHeader = (baseUrl: string) =>
     ? 'x-cg-pro-api-key'
     : 'x-cg-demo-api-key'
 
+const getErrorMessage = (errorBody: unknown, fallback: string) => {
+  if (typeof errorBody === 'string') return errorBody
+
+  if (!errorBody || typeof errorBody !== 'object') return fallback
+
+  const body = errorBody as {
+    error?: string | { status?: { error_message?: string } }
+    status?: { error_message?: string }
+  }
+
+  if (typeof body.error === 'string') return body.error
+  if (body.error && typeof body.error === 'object' && body.error.status?.error_message) {
+    return body.error.status.error_message
+  }
+  if (body.status?.error_message) return body.status.error_message
+
+  return fallback
+}
+
 const makeRequest = async (baseUrl: string, endpoint: string, params?: QueryParams, revalidate = 60) => {
   return fetch(buildUrl(baseUrl, endpoint, params), {
     headers: {
@@ -47,20 +66,22 @@ export const fetcher = async <T>(
   params?: QueryParams,
   revalidate = 60,
 ): Promise<T> => {
-  let response = await makeRequest(BASE_URL, endpoint, params, revalidate)
-  let errorBody: CoinGeckoErrorBody = {}
+  let requestBaseUrl = BASE_URL
+  let response = await makeRequest(requestBaseUrl, endpoint, params, revalidate)
+  let errorBody: unknown = {}
 
   if (!response.ok) {
     errorBody = await response.json().catch(() => ({}))
 
-    const errorMessage = errorBody.error || errorBody.status?.error_message || response.statusText
+    const errorMessage = getErrorMessage(errorBody, response.statusText)
     const shouldRetryWithDemoApi =
       response.status === 400 &&
       normalizeBaseUrl(BASE_URL).includes('pro-api.coingecko.com') &&
       /demo api key/i.test(errorMessage)
 
     if (shouldRetryWithDemoApi) {
-      response = await makeRequest(DEMO_BASE_URL, endpoint, params, revalidate)
+      requestBaseUrl = DEMO_BASE_URL
+      response = await makeRequest(requestBaseUrl, endpoint, params, revalidate)
 
       if (response.ok) {
         return response.json()
@@ -69,9 +90,30 @@ export const fetcher = async <T>(
       errorBody = await response.json().catch(() => ({}))
     }
 
-    throw new Error(
-      `API Error: ${response.status}: ${errorBody.error || errorBody.status?.error_message || response.statusText} `,
-    )
+    const shouldRetryOhlcMaxWithYear =
+      normalizeEndpoint(endpoint).endsWith('/ohlc') &&
+      params?.days === 'max' &&
+      /past 365 days|allowed time range/i.test(getErrorMessage(errorBody, response.statusText))
+
+    if (shouldRetryOhlcMaxWithYear) {
+      response = await makeRequest(
+        requestBaseUrl,
+        endpoint,
+        {
+          ...params,
+          days: 365,
+        },
+        revalidate,
+      )
+
+      if (response.ok) {
+        return response.json()
+      }
+
+      errorBody = await response.json().catch(() => ({}))
+    }
+
+    throw new Error(`API Error: ${response.status}: ${getErrorMessage(errorBody, response.statusText)} `)
   }
 
   return response.json()

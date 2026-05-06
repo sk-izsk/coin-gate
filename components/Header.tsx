@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 import { cn } from '../lib/utils'
+import { SearchModal } from './SearchModal'
 
 interface Props {}
 
@@ -32,7 +33,7 @@ export const Header: React.FC<Props> = () => {
           >
             Home
           </Link>
-          <p>Search Modal</p>
+          <SearchModal />
           <Link
             className={cn('nav-link', {
               'is-active': pathName === '/coins',
