@@ -699,14 +699,31 @@
     }
 
     .search-item {
-      @apply grid grid-cols-[minmax(0,1.7fr)_auto_auto] gap-6 items-center justify-between transition-all !cursor-pointer hover:bg-dark-400/60 px-5 py-4 border-b border-border last:border-b-0 min-h-19;
+      @apply relative isolate grid grid-cols-[minmax(0,1.7fr)_auto_auto] gap-6 items-center justify-between transition-all !cursor-pointer px-5 py-4 border-b border-border last:border-b-0 min-h-19;
 
-      &.is-selected {
-        @apply bg-dark-400 ring-1 ring-inset ring-border shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)];
+      &::before {
+        content: '';
+        @apply absolute inset-x-2 inset-y-1 rounded-xl border border-transparent bg-dark-400/0 opacity-0 transition-all duration-200 ease-out;
       }
 
-      &[aria-selected='true'] {
-        @apply bg-dark-400 ring-1 ring-inset ring-border shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)];
+      > * {
+        @apply relative z-10;
+      }
+
+      &:hover::before {
+        @apply bg-dark-400/60 opacity-100;
+      }
+
+      &:focus-visible::before {
+        @apply bg-dark-400/60 opacity-100;
+      }
+
+      &.is-selected::before {
+        @apply border-emerald-400/25 bg-linear-to-r from-emerald-500/12 via-emerald-500/6 to-transparent opacity-100 shadow-[0_14px_34px_rgba(16,185,129,0.12),inset_0_1px_0_rgba(255,255,255,0.05)];
+      }
+
+      &[aria-selected='true']::before {
+        @apply border-emerald-400/25 bg-linear-to-r from-emerald-500/12 via-emerald-500/6 to-transparent opacity-100 shadow-[0_14px_34px_rgba(16,185,129,0.12),inset_0_1px_0_rgba(255,255,255,0.05)];
       }
 
       .coin-info {
