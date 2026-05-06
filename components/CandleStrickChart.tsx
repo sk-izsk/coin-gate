@@ -141,7 +141,7 @@ export const CandleStickChart = ({
         <div className="flex-1">{children}</div>
 
         <div className="button-group">
-          <span className="text-sm mx-2 font-medium text-purple-100/50">Period:</span>
+          <span className="text-sm mr-1 font-medium text-purple-100/50">Period:</span>
           {PERIOD_BUTTONS.map(({ value, label }) => (
             <button
               key={value}
@@ -156,7 +156,7 @@ export const CandleStickChart = ({
 
         {liveInterval && (
           <div className="button-group">
-            <span className="text-sm mx-2 font-medium text-purple-100/50">Update Frequency:</span>
+            <span className="text-sm mr-1 font-medium text-purple-100/50">Update Frequency:</span>
             {LIVE_INTERVAL_BUTTONS.map(({ value, label }) => (
               <button
                 key={value}

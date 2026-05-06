@@ -10,7 +10,11 @@ const Categories = async () => {
     const categories = await fetcher<Category[]>('/coins/categories')
 
     const columns: DataTableColumn<Category>[] = [
-      { header: 'Category', cellClassName: 'category-cell', cell: (category) => category.name },
+      {
+        header: 'Category',
+        cellClassName: 'category-cell',
+        cell: (category) => <p className="truncate max-w-32 md:max-w-none">{category.name}</p>,
+      },
       {
         header: 'Top Gainers',
         cellClassName: 'top-gainers-cell',
