@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { useRef } from 'react'
 
 import { useTheme } from 'next-themes'
@@ -8,7 +9,7 @@ import { useCandlestickData } from '../hooks/useCandlestickData'
 import { useCandlestickSeries } from '../hooks/useCandlestickSeries'
 import { LIVE_INTERVAL_BUTTONS, PERIOD_BUTTONS } from '../constant'
 
-export const CandleStickChart = ({
+export const CandleStickChart: React.FC<CandlestickChartProps> = ({
   children,
   data,
   coinId,
@@ -18,7 +19,7 @@ export const CandleStickChart = ({
   mode = 'historical',
   liveInterval,
   setLiveInterval,
-}: CandlestickChartProps) => {
+}) => {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === 'dark'
   const chartContainerRef = useRef<HTMLDivElement | null>(null)

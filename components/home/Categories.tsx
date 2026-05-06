@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 import { cn, formatCurrency, formatPercentage } from '@/utils/utils'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 import Image from 'next/image'
@@ -5,7 +7,7 @@ import { fetcher } from '../../api/coinGecko.api'
 import { DataTable } from '../DataTable'
 import { CategoriesFallback } from './Fallback'
 
-const Categories = async () => {
+const Categories: React.FC = async () => {
   try {
     const categories = await fetcher<Category[]>('/coins/categories')
 

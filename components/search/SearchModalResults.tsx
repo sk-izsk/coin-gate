@@ -1,29 +1,28 @@
 'use client'
 
+import * as React from 'react'
 import { cn, formatCurrency, formatPercentage } from '@/utils/utils'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
 
 import type { SearchResultItem } from '../../hooks/useSearchResults'
+import { PendingNavigationLink } from '../navigation/PendingNavigationLink'
 
 interface SearchModalResultsProps {
   emptyLabel: string
   itemRefs: React.RefObject<Array<HTMLAnchorElement | null>>
   items: SearchResultItem[]
   selectedIndex: number
-  onClose: () => void
   onHoverItem: (index: number) => void
 }
 
-export const SearchModalResults = ({
+export const SearchModalResults: React.FC<SearchModalResultsProps> = ({
   emptyLabel,
   itemRefs,
   items,
   selectedIndex,
-  onClose,
   onHoverItem,
-}: SearchModalResultsProps) => {
+}) => {
   if (!items.length) {
     return (
       <div className="search-results">
@@ -39,7 +38,7 @@ export const SearchModalResults = ({
         const isUp = change >= 0
 
         return (
-          <Link
+          <PendingNavigationLink
             key={coin.id}
             href={`/coins/${coin.id}`}
             ref={(element) => {
@@ -49,7 +48,6 @@ export const SearchModalResults = ({
               'is-selected': index === selectedIndex,
             })}
             aria-selected={index === selectedIndex}
-            onClick={onClose}
             onMouseEnter={() => onHoverItem(index)}
             onFocus={() => onHoverItem(index)}
           >
@@ -74,7 +72,7 @@ export const SearchModalResults = ({
               {isUp ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
               <span>{coin.priceChange24h === null ? '-' : formatPercentage(change)}</span>
             </div>
-          </Link>
+          </PendingNavigationLink>
         )
       })}
     </div>

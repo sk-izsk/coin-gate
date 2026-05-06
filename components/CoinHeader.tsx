@@ -1,16 +1,18 @@
+import * as React from 'react'
+
 import { Badge } from '@/components/ui/badge'
 import { cn, formatCurrency, formatPercentage } from '@/utils/utils'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 import Image from 'next/image'
 
-export const CoinHeader = ({
+export const CoinHeader: React.FC<LiveCoinHeaderProps> = ({
   livePriceChangePercentage24h,
   priceChangePercentage30d,
   name,
   image,
   livePrice,
   priceChange24h,
-}: LiveCoinHeaderProps) => {
+}) => {
   const isTrendingUp = livePriceChangePercentage24h > 0
   const isThirtyDayUp = priceChangePercentage30d > 0
   const isPriceChangeUp = priceChange24h > 0

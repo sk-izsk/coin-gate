@@ -1,6 +1,10 @@
+import * as React from 'react'
+
 import { DataTable } from '../DataTable'
 
-export const CoinOverviewFallback = () => {
+interface CoinOverviewFallbackProps {}
+
+export const CoinOverviewFallback: React.FC<CoinOverviewFallbackProps> = () => {
   return (
     <div id="coin-overview-fallback">
       <div className="header pt-2">
@@ -17,7 +21,9 @@ export const CoinOverviewFallback = () => {
   )
 }
 
-export const TrendingCoinsFallback = () => {
+interface TrendingCoinsFallbackProps {}
+
+export const TrendingCoinsFallback: React.FC<TrendingCoinsFallbackProps> = () => {
   const columns = [
     {
       header: 'Name',
@@ -58,7 +64,9 @@ export const TrendingCoinsFallback = () => {
   )
 }
 
-export const CategoriesFallback = () => {
+interface CategoriesFallbackProps {}
+
+export const CategoriesFallback: React.FC<CategoriesFallbackProps> = () => {
   const columns = [
     {
       header: 'Category',

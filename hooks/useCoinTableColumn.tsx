@@ -1,29 +1,25 @@
 import { cn, formatCurrency, formatPercentage } from '../utils/utils'
 import Image from 'next/image'
-import Link from 'next/link'
+
+import { PendingNavigationLink } from '../components/navigation/PendingNavigationLink'
 
 export const useCoinTableColumn = () => {
   const columns: DataTableColumn<CoinMarketData>[] = [
     {
       header: 'Rank',
       cellClassName: 'rank-cell',
-      cell: (coin) => (
-        <>
-          #{coin.market_cap_rank}
-          <Link href={`/coins/${coin.id}`} aria-label="View coin" />
-        </>
-      ),
+      cell: (coin) => `#${coin.market_cap_rank}`,
     },
     {
       header: 'Token',
       cellClassName: 'token-cell',
       cell: (coin) => (
-        <div className="token-info">
+        <PendingNavigationLink href={`/coins/${coin.id}`} className="token-info">
           <Image src={coin.image} alt={coin.name} width={36} height={36} />
           <p>
             {coin.name} ({coin.symbol.toUpperCase()})
           </p>
-        </div>
+        </PendingNavigationLink>
       ),
     },
     {

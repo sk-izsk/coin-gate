@@ -5,7 +5,9 @@ import { useTheme } from 'next-themes'
 import * as React from 'react'
 import { Button } from './ui/button'
 
-export function ThemeToggle() {
+interface ThemeToggleProps {}
+
+export const ThemeToggle: React.FC<ThemeToggleProps> = () => {
   const { theme, setTheme } = useTheme()
 
   return (

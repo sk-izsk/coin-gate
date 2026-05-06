@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { Input } from '@/components/ui/input'
 import { formatCurrency } from '@/utils/utils'
 import Image from 'next/image'
@@ -7,7 +8,7 @@ import { useState } from 'react'
 
 import { Select } from '@/components/ui/select'
 
-export const Converter = ({ symbol, icon, priceList }: ConverterProps) => {
+export const Converter: React.FC<ConverterProps> = ({ symbol, icon, priceList }) => {
   const [currency, setCurrency] = useState('usd')
   const [amount, setAmount] = useState('10')
 

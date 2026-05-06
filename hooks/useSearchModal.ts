@@ -1,14 +1,20 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 import { useSearchHotkey } from './useSearchHotkey'
 import { useSearchNavigation } from './useSearchNavigation'
 import { useSearchResults } from './useSearchResults'
 
-export const useSearchModal = () => {
+interface UseSearchModalProps {
+  onSelectCoin?: (coinId: string) => void
+}
+
+export const useSearchModal = ({ onSelectCoin }: UseSearchModalProps = {}) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
+  const pathname = usePathname()
+  const previousPathnameRef = useRef(pathname)
   const router = useRouter()
 
   const [open, setOpen] = useState(false)
@@ -26,9 +32,24 @@ export const useSearchModal = () => {
     return () => window.cancelAnimationFrame(frame)
   }, [open])
 
+  useEffect(() => {
+    if (previousPathnameRef.current !== pathname && open) {
+      setOpen(false)
+    }
+
+    previousPathnameRef.current = pathname
+  }, [open, pathname])
+
   const handleSelect = (coinId: string) => {
-    setOpen(false)
-    router.push(`/coins/${coinId}`)
+    const nextPath = `/coins/${coinId}`
+
+    if (pathname === nextPath) {
+      setOpen(false)
+      return
+    }
+
+    onSelectCoin?.(coinId)
+    router.push(nextPath)
   }
 
   useSearchHotkey({

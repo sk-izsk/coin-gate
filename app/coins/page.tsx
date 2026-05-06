@@ -1,9 +1,11 @@
+import * as React from 'react'
 import { fetcher } from '@/api/coinGecko.api'
 import { CoinsPagination } from '@/components/CoinPagination'
 import { DataTable } from '@/components/DataTable'
+import { PendingNavigationBoundary } from '@/components/navigation/PendingNavigationBoundary'
 import { useCoinTableColumn } from '../../hooks/useCoinTableColumn'
 
-const Coins = async ({ searchParams }: NextPageProps) => {
+const Coins: React.FC<NextPageProps> = async ({ searchParams }) => {
   const { page } = await searchParams
 
   const currentPage = Number(page) || 1
@@ -29,18 +31,24 @@ const Coins = async ({ searchParams }: NextPageProps) => {
       <div className="content">
         <h4>All Coins</h4>
 
-        <DataTable
-          tableClassName="coins-table"
-          columns={columns}
-          data={coinsData}
-          rowKey={(coin) => coin.id}
-        />
+        <PendingNavigationBoundary
+          className="space-y-4"
+          overlayLabel="Loading more coins..."
+          overlayClassName="rounded-2xl"
+        >
+          <DataTable
+            tableClassName="coins-table"
+            columns={columns}
+            data={coinsData}
+            rowKey={(coin) => coin.id}
+          />
 
-        <CoinsPagination
-          currentPage={currentPage}
-          totalPages={estimatedTotalPages}
-          hasMorePages={hasMorePages}
-        />
+          <CoinsPagination
+            currentPage={currentPage}
+            totalPages={estimatedTotalPages}
+            hasMorePages={hasMorePages}
+          />
+        </PendingNavigationBoundary>
       </div>
     </main>
   )

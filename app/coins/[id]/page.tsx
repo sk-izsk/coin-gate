@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { fetcher, getPools } from '@/api/coinGecko.api'
 import { Converter } from '@/components/Converter'
 import LiveDataWrapper from '@/components/LiveDataWrapper'
@@ -5,7 +6,7 @@ import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { coinDetailList } from '../../../utils/coinDetailList'
 
-const Page = async ({ params }: NextPageProps) => {
+const Page: React.FC<NextPageProps> = async ({ params }) => {
   const { id } = await params
 
   const [coinData, coinOHLCData] = await Promise.all([

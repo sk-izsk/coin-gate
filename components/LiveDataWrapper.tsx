@@ -1,5 +1,6 @@
 'use client'
 
+import * as React from 'react'
 import { Separator } from '@/components/ui/separator'
 import { useCoinGeckoWebSocket } from '@/hooks/useCoinGeckoWebSocket'
 import { formatCurrency, timeAgo } from '@/utils/utils'
@@ -8,7 +9,13 @@ import { CandleStickChart } from './CandleStickChart'
 import { CoinHeader } from './CoinHeader'
 import { DataTable } from './DataTable'
 
-const LiveDataWrapper = ({ children, coinId, poolId, coin, coinOHLCData }: LiveDataProps) => {
+const LiveDataWrapper: React.FC<LiveDataProps> = ({
+  children,
+  coinId,
+  poolId,
+  coin,
+  coinOHLCData,
+}) => {
   const [liveInterval, setLiveInterval] = useState<'1s' | '1m'>('1s')
   const { trades, ohlcv, price } = useCoinGeckoWebSocket({ coinId, poolId, liveInterval })
 

@@ -1,13 +1,22 @@
 'use client'
 
+import * as React from 'react'
+
+import { usePendingNavigationBoundary } from '@/components/navigation/PendingNavigationBoundary'
 import { Pagination as UIPagination } from '@/components/ui/pagination'
 import { buildPageNumbers, cn, ELLIPSIS } from '@/utils/utils'
 import { useRouter } from 'next/navigation'
 
-export const CoinsPagination = ({ currentPage, totalPages, hasMorePages }: Pagination) => {
+export const CoinsPagination: React.FC<Pagination> = ({
+  currentPage,
+  totalPages,
+  hasMorePages,
+}) => {
   const router = useRouter()
+  const { startPending } = usePendingNavigationBoundary()
 
   const handlePageChange = (page: number) => {
+    startPending()
     router.push(`/coins?page=${page}`)
   }
 
